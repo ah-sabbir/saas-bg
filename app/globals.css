@@ -30,4 +30,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  #input-hex:focus{
+    border: 1px solid #ff6733 !important;
+  }
 }

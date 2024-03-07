@@ -1,113 +1,82 @@
+'use client'
 import Image from "next/image";
+import React, { ChangeEvent, useEffect, useState } from "react";
+
+
+function componentToHex(c:number) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
 
 export default function Home() {
+
+  const toRGB = (color:string) => {
+    const { style } = new Option();
+    style.color = color;
+    return style.color;
+}
+  const [hexColor, setHexColor] = useState('A4654F');
+  const [rgbColor, setRgbColor] = useState(String)
+  const [redColorRange, setRedColorRange] = useState('100')
+  const [greenColorRange, setGreenColorRange] = useState('100')
+  const [blackColorRange, setBlackColorRange] = useState('100')
+
+  useEffect(()=>{
+    const rgbc = toRGB('#'+hexColor || '');
+    setRgbColor(rgbc)
+  },[hexColor])
+
+  useEffect(()=>{
+    // const rgbTohex = [parseInt(redColorRange,16), parseInt(greenColorRange,16), parseInt(blackColorRange,16)].map(()=>)
+    const r = parseInt(redColorRange)
+    const g = parseInt(greenColorRange)
+    const b = parseInt(blackColorRange)
+    setHexColor(componentToHex(r)+componentToHex(g)+componentToHex(b))
+  }, [redColorRange, greenColorRange, blackColorRange])
+  
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className={`flex min-h-screen`} style={{background:'#'+hexColor}}>
+      <div className="z-10 min-w-[30%] min-h-screen bg-white flex-col justify-center p-5">
+        <canvas className="w-full bg-lime-700"></canvas>
+        <div className="slidecontainer">
+          {/* Red color code */}
+          <label htmlFor="color-range" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Red</label>
+          <input id="color-range" type="range"  min="1" onChange={(e)=>setRedColorRange(e.target.value)} max="255" value={redColorRange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"/>
+          {/* Green color code */}
+          <label htmlFor="color-range" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Green</label>
+          <input id="color-range" type="range"  min="0" onChange={(e)=>setGreenColorRange(e.target.value)} max="255" value={greenColorRange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"/>
+          {/* Black color code */}
+          <label htmlFor="color-range" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Black</label>
+          <input id="color-range" type="range"  min="0" onChange={(e)=>setBlackColorRange(e.target.value)} max="255" value={blackColorRange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"/>
+
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <div className="color-codes-group p-2">
+          <div className="hex-input-group relative">
+            <label htmlFor="input-hex" className="block select-none">HEX</label>
+            <input type="text" 
+                  maxLength={6} 
+                  id="input-hex" 
+                  defaultValue={hexColor} 
+                  onChange={(e)=> setHexColor(e.target.value)} 
+                  className="pl-8 border-[1px] border-solid border-[#dddeee] focus:outline-none focus:border-solid focus:border-[#dddeee]"/>
+            <div className="hex-icon bg-slate-200 absolute top-1/2 left-1 px-2">#</div>
+          </div>
+          <div className="rgb-input-group relative">
+            <label htmlFor="input-rgb" className="block select-none">RGB</label>
+            <input type="text" 
+                  readOnly={true}
+                  maxLength={6} 
+                  id="input-rgb" 
+                  value={`${rgbColor}`}
+                  onChange={(e)=>e}
+                  className="p-2 border-[1px] border-solid border-[#dddeee] focus:outline-none" />
+          </div>
+        </div>
+        <h1>this is main winodw</h1>
       </div>
     </main>
   );
 }
+
+
+
